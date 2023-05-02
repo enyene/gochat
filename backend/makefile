@@ -10,5 +10,13 @@ createdb:
 dropdb:
 	docker exec -it userpostgres dropdb gochat
 
+migrateup:
+	migrate -path db/migrations -databse "postgresql://root:password@localhost:5432/gochat?sslmode=disable" -verbose up
 
-.PHONY: postgres psql createdb dropdb
+migratedown:
+	migrate -path db/migrations -databse "postgresql://root:password@localhost:5432/gochat?sslmode=disable" -verbose up
+
+migratedb:
+	migrate create -ext sql -dir db/migrations add_user_table
+
+.PHONY: postgres psql createdb dropdb migratedown migrateup migratedb
